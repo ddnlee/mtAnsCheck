@@ -42,21 +42,25 @@ def sympy_eval_handler(event, context):
             try:
                 correct_sympy, student_sympy = Ans2Sympy(_correct_answer,_student_answer, f=_check_function)
                 if _check_function == 'PolyExpansionCompare':
-                    _symbol = object[cnt]['symbol']
-                    _order = object[cnt]['order']
+                    _symbol = object[cnt]['symbol'] if 'symbol' in object[cnt].keys() else None
+                    _order = object[cnt]['order'] if 'order' in object[cnt].keys() else None
+                    
                     result = globals()[_check_function](correct_sympy, student_sympy, _symbol, _order)
                 elif _check_function == 'NumCompare':
-                    _Type = object[cnt]['Type']
-                    _order = object[cnt]['order']
+                    _Type = object[cnt]['Type'] if 'Type' in object[cnt].keys() else None
+                    _order = object[cnt]['order'] if 'order' in object[cnt].keys() else None
+
                     result = globals()[_check_function](correct_sympy, student_sympy, _Type, _order)
                 elif _check_function in ['PolyCompare','PairCompare', 'SignCompare']:
-                    _order = object[cnt]['order']
+                    _order = object[cnt]['order'] if 'order' in object[cnt].keys() else None
+
                     result = globals()[_check_function](correct_sympy, student_sympy, _order)
                 elif _check_function == 'EqCompare':
-                    _leading_coeff = object[cnt]['leading_coeff']
+                    _leading_coeff = object[cnt]['leading_coeff'] if 'leading_coeff' in object[cnt].keys() else None
                     result = globals()[_check_function](correct_sympy, student_sympy, _leading_coeff)
                 else:
                     result = globals()[_check_function](correct_sympy, student_sympy)
+                    
             except Exception as expt:
                 print(expt)
                 result = 'N/A'
